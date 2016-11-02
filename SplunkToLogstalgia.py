@@ -53,7 +53,12 @@ def follow(job, count, items):
         for event in results.ResultsReader(stream):
             # event['haproxy_wikiid'] = "-"
             # event['haproxy_server_name'] = "-"
-            print "{0} {1} {2} {3} \"GET {4}\" {5} {6}".format(
+            if event['client_ip'] == '207.7.102.228':
+                event['client_ip'] = 'MindTouch_Glactic_Headquarters_Network'
+
+            event['haproxy_http_request'] = '{1}:{0}'.format(event['haproxy_wikiid'],event['haproxy_http_request'])
+
+            print "{0} {1} {2} {3} \"GET {4} HTTP/1.1\" {5} {6}".format(
                     event['client_ip'],
                     event['haproxy_wikiid'],
                     event['haproxy_server_name'],

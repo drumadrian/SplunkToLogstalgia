@@ -40,3 +40,18 @@ Note:
   	ssh -L 8089:mysplunkdomain.splunkcloud.com:8089  oneofmyservers.mydomain.com
 
 
+
+
+
+
+
+
+
+Additional Command Line examples: 
+
+ssh -v -i .ssh/privatekey -L 8089:jumpbox:8089  splunkserver.mydomain.com
+
+python SplunkToLogstalgia.py "search sourcetype="haproxy" client_ip="*" haproxy_server_name="*" haproxy_status_code="*" haproxy_wikiid="*" haproxy_accept_date="*" haproxy_http_request="*" haproxy_resp_content_length="*" " | logstalgia --full-hostnames -g "MindTouch-API Client Error,CODE=^[4],30" -g "MindTouch-API Success,CODE=^[2],30" -g "MindTouch-API Redirects,CODE=^[3],30" -g "MindTouch-API Server Error,CODE=^[5],30"
+
+
+

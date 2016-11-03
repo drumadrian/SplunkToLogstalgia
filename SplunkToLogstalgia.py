@@ -37,7 +37,7 @@ def convertToApacheTime(haproxy_time):
     # Input received in this format: 03/Oct/2016:23:29:18.830 -0800
     # Output needs this format: 07/Mar/2004:16:36:22 -0800
     input_time = datetime.datetime.strptime(haproxy_time, '%d/%b/%Y:%H:%M:%S.%f')
-    output_time = input_time.strftime('[%d/%b/%Y:%H:%M:%S -0800]')
+    output_time = input_time.strftime('[%d/%b/%Y:%H:%M:%S -0700]')
     return output_time
     #Expecting this format now   [07/Mar/2004:16:36:22 -0800]
 
@@ -79,9 +79,9 @@ def main():
     service = client.connect(**opts.kwargs)
 
     job = service.jobs.create(
-        search, 
-        earliest_time="rt", 
-        latest_time="rt", 
+        search,
+        earliest_time="rt",
+        latest_time="rt",
         search_mode="realtime")
 
     # Wait for the job to transition out of QUEUED and PARSING so that
@@ -91,14 +91,14 @@ def main():
         if job['dispatchState'] not in ['QUEUED', 'PARSING']:
             break
         time.sleep(2) # Wait
-        
+
     if job['reportSearch'] is not None: # Is it a transforming search?
         count = lambda: int(job['numPreviews'])
         items = lambda _: job.preview()
     else:
         count = lambda: int(job['eventCount'])
         items = lambda offset: job.events(offset=offset)
-    
+
     try:
         follow(job, count, items)
     except KeyboardInterrupt:
